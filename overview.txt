@@ -1,0 +1,39 @@
+NAME                                         READY   STATUS             RESTARTS      AGE
+pod/counter-backend-5847f8c4d4-xwbpd         0/1     CrashLoopBackOff   9 (41s ago)   24m
+pod/counter-backend-5847f8c4d4-z4jq9         0/1     CrashLoopBackOff   9 (38s ago)   24m
+pod/counter-database-765d69545c-mj62f        1/1     Running            0             166m
+pod/counter-frontend-7cbdfdf9c-2vkt8         1/1     Running            0             41m
+pod/counter-frontend-7cbdfdf9c-sz9zr         1/1     Running            0             41m
+pod/counter-postgresadmin-69794dcf8d-f488l   0/1     ImagePullBackOff   0             7m40s
+pod/nginx-deployment-86c6ffbfd7-l7jm6        1/1     Running            0             5d23h
+pod/nginx-deployment-86c6ffbfd7-nmtkq        1/1     Running            0             5d23h
+pod/nginx-deployment-86c6ffbfd7-t8jbq        1/1     Running            0             5d23h
+
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/counter-backend    ClusterIP   172.30.240.152   <none>        8080/TCP   30m
+service/counter-database   ClusterIP   172.30.29.126    <none>        5432/TCP   166m
+service/counter-frontend   ClusterIP   172.30.191.255   <none>        80/TCP     41m
+service/service            ClusterIP   172.30.159.47    <none>        8080/TCP   5d23h
+
+NAME                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/counter-backend         0/2     2            0           24m
+deployment.apps/counter-database        1/1     1            1           166m
+deployment.apps/counter-frontend        2/2     2            2           41m
+deployment.apps/counter-postgresadmin   0/1     1            0           7m40s
+deployment.apps/nginx-deployment        3/3     3            3           5d23h
+
+NAME                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/counter-backend-5847f8c4d4         2         2         0       24m
+replicaset.apps/counter-database-765d69545c        1         1         1       166m
+replicaset.apps/counter-frontend-7cbdfdf9c         2         2         2       41m
+replicaset.apps/counter-postgresadmin-69794dcf8d   1         1         0       7m40s
+replicaset.apps/nginx-deployment-86c6ffbfd7        3         3         3       5d23h
+
+NAME                                                   REFERENCE                     TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/counter-backend    Deployment/counter-backend    <unknown>/50%   2         2         2          13m
+horizontalpodautoscaler.autoscaling/counter-frontend   Deployment/counter-frontend   0%/50%          2         4         2          12m
+
+NAME                                        HOST/PORT                                                                  PATH   SERVICES           PORT       TERMINATION     WILDCARD
+route.route.openshift.io/chill              chill-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud                     service            8080-tcp   edge/Redirect   None
+route.route.openshift.io/counter-backend    counter-backend-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud           counter-backend    8080-tcp                   None
+route.route.openshift.io/counter-frontend   counter-frontend-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud          counter-frontend   80                         None

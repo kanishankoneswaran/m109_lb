@@ -1,0 +1,2712 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.55"
+            ],
+            "mac": "96:d1:da:58:bd:46",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.55"
+            ],
+            "mac": "96:d1:da:58:bd:46",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container counter-backend; cpu, memory limit for container
+        counter-backend'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-07-06T14:00:15Z"
+    generateName: counter-backend-5847f8c4d4-
+    labels:
+      app: counter-backend
+      pod-template-hash: 5847f8c4d4
+    name: counter-backend-5847f8c4d4-xwbpd
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: counter-backend-5847f8c4d4
+      uid: 13a29727-d632-4699-96a0-e1aeafcec52f
+    resourceVersion: "1082504491"
+    uid: a397802a-df30-4fe1-9bc1-55286af863f0
+  spec:
+    containers:
+    - env:
+      - name: DB_USER
+        valueFrom:
+          secretKeyRef:
+            key: database-user
+            name: counter-database
+      - name: DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: database-password
+            name: counter-database
+      - name: DB_NAME
+        valueFrom:
+          secretKeyRef:
+            key: database-name
+            name: counter-database
+      - name: DB_HOST
+        valueFrom:
+          configMapKeyRef:
+            key: FRONTEND_URL
+            name: counter-backend
+      - name: npm_config_cache
+        value: ./.npm-cache
+      image: ghcr.io/kanishankoneswaran/counter-backend:v1
+      imagePullPolicy: IfNotPresent
+      name: counter-backend
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-bntlt
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-c86c
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-bntlt
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:00:15Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:23:45Z"
+      message: 'containers with unready status: [counter-backend]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:23:45Z"
+      message: 'containers with unready status: [counter-backend]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:00:15Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://c93666abd8bcaf164b83472c412e378e212b0ca39a1bdb2c116e2135468a4965
+      image: ghcr.io/kanishankoneswaran/counter-backend:v1
+      imageID: ghcr.io/kanishankoneswaran/counter-backend@sha256:d8d432c281cab203f47e51136595a1f48f96454fd8ed9c6ba9cf7710538f12cd
+      lastState:
+        terminated:
+          containerID: cri-o://c93666abd8bcaf164b83472c412e378e212b0ca39a1bdb2c116e2135468a4965
+          exitCode: 1
+          finishedAt: "2023-07-06T14:23:45Z"
+          reason: Error
+          startedAt: "2023-07-06T14:23:30Z"
+      name: counter-backend
+      ready: false
+      restartCount: 9
+      started: false
+      state:
+        waiting:
+          message: back-off 5m0s restarting failed container=counter-backend pod=counter-backend-5847f8c4d4-xwbpd_zlic-kkoneswaran1(a397802a-df30-4fe1-9bc1-55286af863f0)
+          reason: CrashLoopBackOff
+    hostIP: 159.100.241.106
+    phase: Running
+    podIP: 10.0.6.55
+    podIPs:
+    - ip: 10.0.6.55
+    qosClass: Burstable
+    startTime: "2023-07-06T14:00:15Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.7.73"
+            ],
+            "mac": "ea:3e:b4:2b:2f:ab",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.7.73"
+            ],
+            "mac": "ea:3e:b4:2b:2f:ab",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container counter-backend; cpu, memory limit for container
+        counter-backend'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-07-06T14:00:15Z"
+    generateName: counter-backend-5847f8c4d4-
+    labels:
+      app: counter-backend
+      pod-template-hash: 5847f8c4d4
+    name: counter-backend-5847f8c4d4-z4jq9
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: counter-backend-5847f8c4d4
+      uid: 13a29727-d632-4699-96a0-e1aeafcec52f
+    resourceVersion: "1082504609"
+    uid: ea6a84b3-2a5a-48fd-b479-67c3ec01845b
+  spec:
+    containers:
+    - env:
+      - name: DB_USER
+        valueFrom:
+          secretKeyRef:
+            key: database-user
+            name: counter-database
+      - name: DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: database-password
+            name: counter-database
+      - name: DB_NAME
+        valueFrom:
+          secretKeyRef:
+            key: database-name
+            name: counter-database
+      - name: DB_HOST
+        valueFrom:
+          configMapKeyRef:
+            key: FRONTEND_URL
+            name: counter-backend
+      - name: npm_config_cache
+        value: ./.npm-cache
+      image: ghcr.io/kanishankoneswaran/counter-backend:v1
+      imagePullPolicy: IfNotPresent
+      name: counter-backend
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-gtrht
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-ad83
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-gtrht
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:00:15Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:23:49Z"
+      message: 'containers with unready status: [counter-backend]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:23:49Z"
+      message: 'containers with unready status: [counter-backend]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:00:15Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://9aab2eed270efb3ea34493aa88d969af7c33a07d0003b837f77ca692e98ef4b0
+      image: ghcr.io/kanishankoneswaran/counter-backend:v1
+      imageID: ghcr.io/kanishankoneswaran/counter-backend@sha256:d8d432c281cab203f47e51136595a1f48f96454fd8ed9c6ba9cf7710538f12cd
+      lastState:
+        terminated:
+          containerID: cri-o://9aab2eed270efb3ea34493aa88d969af7c33a07d0003b837f77ca692e98ef4b0
+          exitCode: 1
+          finishedAt: "2023-07-06T14:23:48Z"
+          reason: Error
+          startedAt: "2023-07-06T14:23:33Z"
+      name: counter-backend
+      ready: false
+      restartCount: 9
+      started: false
+      state:
+        waiting:
+          message: back-off 5m0s restarting failed container=counter-backend pod=counter-backend-5847f8c4d4-z4jq9_zlic-kkoneswaran1(ea6a84b3-2a5a-48fd-b479-67c3ec01845b)
+          reason: CrashLoopBackOff
+    hostIP: 159.100.243.101
+    phase: Running
+    podIP: 10.0.7.73
+    podIPs:
+    - ip: 10.0.7.73
+    qosClass: Burstable
+    startTime: "2023-07-06T14:00:15Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.198"
+            ],
+            "mac": "0e:57:83:cc:1d:ce",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.198"
+            ],
+            "mac": "0e:57:83:cc:1d:ce",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container counter-database; cpu, memory limit for container
+        counter-database'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-07-06T11:38:17Z"
+    generateName: counter-database-765d69545c-
+    labels:
+      app: counter-database
+      pod-template-hash: 765d69545c
+    name: counter-database-765d69545c-mj62f
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: counter-database-765d69545c
+      uid: a1e07cc7-385d-482b-90fe-d8502a252066
+    resourceVersion: "1082229666"
+    uid: 0e68086c-b655-4fdb-b52e-d565b03f2897
+  spec:
+    containers:
+    - env:
+      - name: POSTGRESQL_USER
+        valueFrom:
+          secretKeyRef:
+            key: database-user
+            name: counter-database
+      - name: POSTGRESQL_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: database-password
+            name: counter-database
+      - name: POSTGRESQL_DATABASE
+        valueFrom:
+          secretKeyRef:
+            key: database-name
+            name: counter-database
+      image: quay.io/centos7/postgresql-10-centos7:20221109
+      imagePullPolicy: Always
+      name: counter-database
+      ports:
+      - containerPort: 5432
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-wzjmz
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-c86c
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-wzjmz
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T11:38:17Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T11:38:20Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T11:38:20Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T11:38:17Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://52228ce981a758d509d517b5fae6739eb55877146de565d79e3b00bf853f4183
+      image: quay.io/centos7/postgresql-10-centos7:20221109
+      imageID: quay.io/centos7/postgresql-10-centos7@sha256:e4d23ff04ed64531e36064a67903be84ca67a3ee673d099767783fac13d12994
+      lastState: {}
+      name: counter-database
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-07-06T11:38:20Z"
+    hostIP: 159.100.241.106
+    phase: Running
+    podIP: 10.0.6.198
+    podIPs:
+    - ip: 10.0.6.198
+    qosClass: Burstable
+    startTime: "2023-07-06T11:38:17Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.7.47"
+            ],
+            "mac": "72:bc:23:56:7f:49",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.7.47"
+            ],
+            "mac": "72:bc:23:56:7f:49",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container counter-frontend; cpu, memory limit for container
+        counter-frontend'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-07-06T13:42:50Z"
+    generateName: counter-frontend-7cbdfdf9c-
+    labels:
+      app: counter-frontend
+      pod-template-hash: 7cbdfdf9c
+    name: counter-frontend-7cbdfdf9c-2vkt8
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: counter-frontend-7cbdfdf9c
+      uid: 6739ef2a-75ab-4de0-96a0-9d7752cd4657
+    resourceVersion: "1082436242"
+    uid: dfdabed5-9e0c-4945-8d80-2a7d7b8bcd09
+  spec:
+    containers:
+    - env:
+      - name: PUBLIC_URL
+        valueFrom:
+          configMapKeyRef:
+            key: BACKEND_URL
+            name: counter-frontend-config
+      - name: npm_config_cache
+        value: ./.npm-cache
+      image: ghcr.io/kanishankoneswaran/counter-frontend:v1
+      imagePullPolicy: IfNotPresent
+      name: counter-frontend
+      ports:
+      - containerPort: 3000
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hx268
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-ad83
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-hx268
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T13:42:50Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T13:42:52Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T13:42:52Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T13:42:50Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://c4b44e90d9c09a64cccbaf7ffbb860ba28ecd14ea56b62c58953a1c1f45bac7b
+      image: ghcr.io/kanishankoneswaran/counter-frontend:v1
+      imageID: ghcr.io/kanishankoneswaran/counter-frontend@sha256:f232eb23a40182271abff6eb847ab761530b03245e133a4cb78df330fb8a80eb
+      lastState: {}
+      name: counter-frontend
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-07-06T13:42:51Z"
+    hostIP: 159.100.243.101
+    phase: Running
+    podIP: 10.0.7.47
+    podIPs:
+    - ip: 10.0.7.47
+    qosClass: Burstable
+    startTime: "2023-07-06T13:42:50Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.1"
+            ],
+            "mac": "06:e2:23:44:3a:1b",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.1"
+            ],
+            "mac": "06:e2:23:44:3a:1b",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container counter-frontend; cpu, memory limit for container
+        counter-frontend'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-07-06T13:42:49Z"
+    generateName: counter-frontend-7cbdfdf9c-
+    labels:
+      app: counter-frontend
+      pod-template-hash: 7cbdfdf9c
+    name: counter-frontend-7cbdfdf9c-sz9zr
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: counter-frontend-7cbdfdf9c
+      uid: 6739ef2a-75ab-4de0-96a0-9d7752cd4657
+    resourceVersion: "1082436235"
+    uid: 21114df3-6ee3-4f29-8a28-27e45592ba6e
+  spec:
+    containers:
+    - env:
+      - name: PUBLIC_URL
+        valueFrom:
+          configMapKeyRef:
+            key: BACKEND_URL
+            name: counter-frontend-config
+      - name: npm_config_cache
+        value: ./.npm-cache
+      image: ghcr.io/kanishankoneswaran/counter-frontend:v1
+      imagePullPolicy: IfNotPresent
+      name: counter-frontend
+      ports:
+      - containerPort: 3000
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-7wvpf
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-c86c
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-7wvpf
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T13:42:50Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T13:42:51Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T13:42:51Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T13:42:50Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://6884824cefd2360110cd3ab21595e92b5382896e40e1056a92ecb819d6255b40
+      image: ghcr.io/kanishankoneswaran/counter-frontend:v1
+      imageID: ghcr.io/kanishankoneswaran/counter-frontend@sha256:f232eb23a40182271abff6eb847ab761530b03245e133a4cb78df330fb8a80eb
+      lastState: {}
+      name: counter-frontend
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-07-06T13:42:51Z"
+    hostIP: 159.100.241.106
+    phase: Running
+    podIP: 10.0.6.1
+    podIPs:
+    - ip: 10.0.6.1
+    qosClass: Burstable
+    startTime: "2023-07-06T13:42:50Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.247"
+            ],
+            "mac": "ae:a9:98:91:35:ac",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.247"
+            ],
+            "mac": "ae:a9:98:91:35:ac",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container counter-postgresadmin; cpu, memory limit for
+        container counter-postgresadmin'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-07-06T14:16:46Z"
+    generateName: counter-postgresadmin-69794dcf8d-
+    labels:
+      app: counter-postgresadmin
+      pod-template-hash: 69794dcf8d
+    name: counter-postgresadmin-69794dcf8d-f488l
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: counter-postgresadmin-69794dcf8d
+      uid: e0e3b59b-e12a-4c51-a8a4-4715729e1c2d
+    resourceVersion: "1082509002"
+    uid: 3cce5eb4-e6f3-4560-987a-5a5e93bd3298
+  spec:
+    containers:
+    - command:
+      - ./wait-for-it.sh
+      - pg:5432
+      - --
+      - python
+      - /usr/local/bin/pgadmin4.py
+      env:
+      - name: PGADMIN_DEFAULT_EMAIL
+        value: admin@admin.com
+      - name: PGADMIN_DEFAULT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: pgadmin-default-password
+            name: counter-postgresadmin
+      image: thajeztah/pgadmin4
+      imagePullPolicy: Always
+      name: counter-postgresadmin
+      ports:
+      - containerPort: 5050
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /pgadmin-data
+        name: pgadmin-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-gsd56
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-c86c
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - emptyDir: {}
+      name: pgadmin-data
+    - name: kube-api-access-gsd56
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:16:46Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:16:46Z"
+      message: 'containers with unready status: [counter-postgresadmin]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:16:46Z"
+      message: 'containers with unready status: [counter-postgresadmin]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-07-06T14:16:46Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - image: thajeztah/pgadmin4
+      imageID: ""
+      lastState: {}
+      name: counter-postgresadmin
+      ready: false
+      restartCount: 0
+      started: false
+      state:
+        waiting:
+          message: Back-off pulling image "thajeztah/pgadmin4"
+          reason: ImagePullBackOff
+    hostIP: 159.100.241.106
+    phase: Pending
+    podIP: 10.0.6.247
+    podIPs:
+    - ip: 10.0.6.247
+    qosClass: Burstable
+    startTime: "2023-07-06T14:16:46Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.10.207"
+            ],
+            "mac": "be:7f:c2:b6:3c:2a",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.10.207"
+            ],
+            "mac": "be:7f:c2:b6:3c:2a",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container nginx; cpu, memory limit for container nginx'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-06-30T14:32:20Z"
+    generateName: nginx-deployment-86c6ffbfd7-
+    labels:
+      app: nginx
+      pod-template-hash: 86c6ffbfd7
+    name: nginx-deployment-86c6ffbfd7-l7jm6
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: nginx-deployment-86c6ffbfd7
+      uid: a396ccdc-ce93-440a-97d6-da49c7fc6cf2
+    resourceVersion: "1068397643"
+    uid: cfc9b254-052b-4d58-9119-9382a7d8500a
+  spec:
+    containers:
+    - image: ghcr.io/kanishankoneswaran/html-page:v1
+      imagePullPolicy: IfNotPresent
+      name: nginx
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-s2fqr
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-175e
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-s2fqr
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:20Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:24Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:24Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:20Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://84ee1932747f8c3a7719f1aea69925d87fb0a6df5896eae0443eee9124a0a3d4
+      image: ghcr.io/kanishankoneswaran/html-page:v1
+      imageID: ghcr.io/kanishankoneswaran/html-page@sha256:78f03a80a969631666c54561af34bbf216799f77bea19a92b683afd520e027e6
+      lastState: {}
+      name: nginx
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-06-30T14:32:23Z"
+    hostIP: 85.217.160.230
+    phase: Running
+    podIP: 10.0.10.207
+    podIPs:
+    - ip: 10.0.10.207
+    qosClass: Burstable
+    startTime: "2023-06-30T14:32:20Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.7.19"
+            ],
+            "mac": "0e:ce:22:3b:a6:5b",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.7.19"
+            ],
+            "mac": "0e:ce:22:3b:a6:5b",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container nginx; cpu, memory limit for container nginx'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-06-30T14:32:20Z"
+    generateName: nginx-deployment-86c6ffbfd7-
+    labels:
+      app: nginx
+      pod-template-hash: 86c6ffbfd7
+    name: nginx-deployment-86c6ffbfd7-nmtkq
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: nginx-deployment-86c6ffbfd7
+      uid: a396ccdc-ce93-440a-97d6-da49c7fc6cf2
+    resourceVersion: "1068397669"
+    uid: 052d835b-56c1-4462-99ad-869aa7d84c55
+  spec:
+    containers:
+    - image: ghcr.io/kanishankoneswaran/html-page:v1
+      imagePullPolicy: IfNotPresent
+      name: nginx
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-mbt95
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-ad83
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-mbt95
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:20Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:24Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:24Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:20Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://463719ecc302ecb892f3f2e4bd8910e0e573bedb0d58cfdc231a0cac35e2e61c
+      image: ghcr.io/kanishankoneswaran/html-page:v1
+      imageID: ghcr.io/kanishankoneswaran/html-page@sha256:78f03a80a969631666c54561af34bbf216799f77bea19a92b683afd520e027e6
+      lastState: {}
+      name: nginx
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-06-30T14:32:23Z"
+    hostIP: 159.100.243.101
+    phase: Running
+    podIP: 10.0.7.19
+    podIPs:
+    - ip: 10.0.7.19
+    qosClass: Burstable
+    startTime: "2023-06-30T14:32:20Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.196"
+            ],
+            "mac": "5e:cc:86:07:62:8d",
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "cilium",
+            "interface": "eth0",
+            "ips": [
+                "10.0.6.196"
+            ],
+            "mac": "5e:cc:86:07:62:8d",
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, ephemeral-storage,
+        memory request for container nginx; cpu, memory limit for container nginx'
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    creationTimestamp: "2023-06-30T14:32:20Z"
+    generateName: nginx-deployment-86c6ffbfd7-
+    labels:
+      app: nginx
+      pod-template-hash: 86c6ffbfd7
+    name: nginx-deployment-86c6ffbfd7-t8jbq
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: nginx-deployment-86c6ffbfd7
+      uid: a396ccdc-ce93-440a-97d6-da49c7fc6cf2
+    resourceVersion: "1068397675"
+    uid: fa1c092f-bbdd-4ed8-8dfb-a4a143a6ce1f
+  spec:
+    containers:
+    - image: ghcr.io/kanishankoneswaran/html-page:v1
+      imagePullPolicy: IfNotPresent
+      name: nginx
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 600m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          ephemeral-storage: 100Ki
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1001210000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9rnnr
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2hz4q
+    - name: ghcr
+    nodeName: worker-c86c
+    nodeSelector:
+      node-role.kubernetes.io/app: ""
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001210000
+      seLinuxOptions:
+        level: s0:c35,c10
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-9rnnr
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:20Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:24Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:24Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-06-30T14:32:20Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://e5b6e32c354eb0a4bd345920b820bc87625352c5ab3c38fb80f7938a2accd788
+      image: ghcr.io/kanishankoneswaran/html-page:v1
+      imageID: ghcr.io/kanishankoneswaran/html-page@sha256:78f03a80a969631666c54561af34bbf216799f77bea19a92b683afd520e027e6
+      lastState: {}
+      name: nginx
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-06-30T14:32:23Z"
+    hostIP: 159.100.241.106
+    phase: Running
+    podIP: 10.0.6.196
+    podIPs:
+    - ip: 10.0.6.196
+    qosClass: Burstable
+    startTime: "2023-06-30T14:32:20Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"counter-backend"},"name":"counter-backend","namespace":"zlic-kkoneswaran1"},"spec":{"ports":[{"name":"8080-tcp","port":8080,"protocol":"TCP","targetPort":8080}],"selector":{"app":"counter-backend"},"sessionAffinity":"None","type":"ClusterIP"}}
+    creationTimestamp: "2023-07-06T13:54:24Z"
+    labels:
+      app: counter-backend
+    name: counter-backend
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082455344"
+    uid: 730f8be9-d471-4325-90f8-f3473dfa5556
+  spec:
+    clusterIP: 172.30.240.152
+    clusterIPs:
+    - 172.30.240.152
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: counter-backend
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"counter-database","namespace":"zlic-kkoneswaran1"},"spec":{"ports":[{"name":"postgres","port":5432,"protocol":"TCP","targetPort":5432}],"selector":{"app":"counter-database"},"type":"ClusterIP"}}
+    creationTimestamp: "2023-07-06T11:37:51Z"
+    name: counter-database
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082228943"
+    uid: f689476d-9e6a-44f3-80ae-88d6458559c6
+  spec:
+    clusterIP: 172.30.29.126
+    clusterIPs:
+    - 172.30.29.126
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: counter-database
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"counter-frontend","namespace":"zlic-kkoneswaran1"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":3000}],"selector":{"app":"counter-frontend"},"type":"ClusterIP"}}
+    creationTimestamp: "2023-07-06T13:42:43Z"
+    name: counter-frontend
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082435958"
+    uid: 2416e136-15f4-4c80-935d-00aa08c18254
+  spec:
+    clusterIP: 172.30.191.255
+    clusterIPs:
+    - 172.30.191.255
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: counter-frontend
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"service"},"name":"service","namespace":"zlic-kkoneswaran1"},"spec":{"ports":[{"name":"8080-tcp","port":8080,"protocol":"TCP","targetPort":8080}],"selector":{"app":"nginx"},"sessionAffinity":"None","type":"ClusterIP"}}
+    creationTimestamp: "2023-06-30T14:32:20Z"
+    labels:
+      app: service
+    name: service
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1068397528"
+    uid: b9249dd1-c16c-4a15-9dea-216f02e7ce0b
+  spec:
+    clusterIP: 172.30.159.47
+    clusterIPs:
+    - 172.30.159.47
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: nginx
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"counter-backend","namespace":"zlic-kkoneswaran1"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"counter-backend"}},"template":{"metadata":{"labels":{"app":"counter-backend"}},"spec":{"containers":[{"env":[{"name":"DB_USER","valueFrom":{"secretKeyRef":{"key":"database-user","name":"counter-database"}}},{"name":"DB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"database-password","name":"counter-database"}}},{"name":"DB_NAME","valueFrom":{"secretKeyRef":{"key":"database-name","name":"counter-database"}}},{"name":"DB_HOST","valueFrom":{"configMapKeyRef":{"key":"FRONTEND_URL","name":"counter-backend"}}},{"name":"npm_config_cache","value":"./.npm-cache"}],"image":"ghcr.io/kanishankoneswaran/counter-backend:v1","name":"counter-backend","ports":[{"containerPort":8080,"protocol":"TCP"}]}]}}}}
+    creationTimestamp: "2023-07-06T14:00:15Z"
+    generation: 1
+    name: counter-backend
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082504257"
+    uid: d1143ce6-c5f0-45fc-8834-1928274ccc33
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: counter-backend
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: counter-backend
+      spec:
+        containers:
+        - env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: counter-database
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: counter-database
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: counter-database
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                key: FRONTEND_URL
+                name: counter-backend
+          - name: npm_config_cache
+            value: ./.npm-cache
+          image: ghcr.io/kanishankoneswaran/counter-backend:v1
+          imagePullPolicy: IfNotPresent
+          name: counter-backend
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2023-07-06T14:00:15Z"
+      lastUpdateTime: "2023-07-06T14:00:16Z"
+      message: ReplicaSet "counter-backend-5847f8c4d4" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2023-07-06T14:23:46Z"
+      lastUpdateTime: "2023-07-06T14:23:46Z"
+      message: Deployment does not have minimum availability.
+      reason: MinimumReplicasUnavailable
+      status: "False"
+      type: Available
+    observedGeneration: 1
+    replicas: 2
+    unavailableReplicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"counter-database","namespace":"zlic-kkoneswaran1"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"counter-database"}},"template":{"metadata":{"labels":{"app":"counter-database"}},"spec":{"containers":[{"env":[{"name":"POSTGRESQL_USER","valueFrom":{"secretKeyRef":{"key":"database-user","name":"counter-database"}}},{"name":"POSTGRESQL_PASSWORD","valueFrom":{"secretKeyRef":{"key":"database-password","name":"counter-database"}}},{"name":"POSTGRESQL_DATABASE","valueFrom":{"secretKeyRef":{"key":"database-name","name":"counter-database"}}}],"image":"quay.io/centos7/postgresql-10-centos7:20221109","imagePullPolicy":"Always","name":"counter-database","ports":[{"containerPort":5432}]}]}}}}
+    creationTimestamp: "2023-07-06T11:38:17Z"
+    generation: 1
+    name: counter-database
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082229669"
+    uid: 67680bee-d08a-4a56-9d55-a602c3f3de5c
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: counter-database
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: counter-database
+      spec:
+        containers:
+        - env:
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: counter-database
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: counter-database
+          - name: POSTGRESQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: counter-database
+          image: quay.io/centos7/postgresql-10-centos7:20221109
+          imagePullPolicy: Always
+          name: counter-database
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2023-07-06T11:38:20Z"
+      lastUpdateTime: "2023-07-06T11:38:20Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2023-07-06T11:38:17Z"
+      lastUpdateTime: "2023-07-06T11:38:20Z"
+      message: ReplicaSet "counter-database-765d69545c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"counter-frontend","namespace":"zlic-kkoneswaran1"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"counter-frontend"}},"template":{"metadata":{"labels":{"app":"counter-frontend"}},"spec":{"containers":[{"env":[{"name":"PUBLIC_URL","valueFrom":{"configMapKeyRef":{"key":"BACKEND_URL","name":"counter-frontend-config"}}},{"name":"npm_config_cache","value":"./.npm-cache"}],"image":"ghcr.io/kanishankoneswaran/counter-frontend:v1","name":"counter-frontend","ports":[{"containerPort":3000,"protocol":"TCP"}]}]}}}}
+    creationTimestamp: "2023-07-06T13:42:49Z"
+    generation: 1
+    name: counter-frontend
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082436246"
+    uid: 8d506ee4-c68b-411a-b003-627378abba98
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: counter-frontend
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: counter-frontend
+      spec:
+        containers:
+        - env:
+          - name: PUBLIC_URL
+            valueFrom:
+              configMapKeyRef:
+                key: BACKEND_URL
+                name: counter-frontend-config
+          - name: npm_config_cache
+            value: ./.npm-cache
+          image: ghcr.io/kanishankoneswaran/counter-frontend:v1
+          imagePullPolicy: IfNotPresent
+          name: counter-frontend
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2023-07-06T13:42:52Z"
+      lastUpdateTime: "2023-07-06T13:42:52Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2023-07-06T13:42:49Z"
+      lastUpdateTime: "2023-07-06T13:42:52Z"
+      message: ReplicaSet "counter-frontend-7cbdfdf9c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"counter-postgresadmin","namespace":"zlic-kkoneswaran1"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"counter-postgresadmin"}},"template":{"metadata":{"labels":{"app":"counter-postgresadmin"}},"spec":{"containers":[{"command":["./wait-for-it.sh","pg:5432","--","python","/usr/local/bin/pgadmin4.py"],"env":[{"name":"PGADMIN_DEFAULT_EMAIL","value":"admin@admin.com"},{"name":"PGADMIN_DEFAULT_PASSWORD","valueFrom":{"secretKeyRef":{"key":"pgadmin-default-password","name":"counter-postgresadmin"}}}],"image":"thajeztah/pgadmin4","name":"counter-postgresadmin","ports":[{"containerPort":5050}],"volumeMounts":[{"mountPath":"/pgadmin-data","name":"pgadmin-data"}]}],"volumes":[{"emptyDir":{},"name":"pgadmin-data"}]}}}}
+    creationTimestamp: "2023-07-06T14:16:46Z"
+    generation: 1
+    name: counter-postgresadmin
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082508991"
+    uid: 27725dc8-64df-4939-ad08-5e0887ad1399
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: counter-postgresadmin
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: counter-postgresadmin
+      spec:
+        containers:
+        - command:
+          - ./wait-for-it.sh
+          - pg:5432
+          - --
+          - python
+          - /usr/local/bin/pgadmin4.py
+          env:
+          - name: PGADMIN_DEFAULT_EMAIL
+            value: admin@admin.com
+          - name: PGADMIN_DEFAULT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: pgadmin-default-password
+                name: counter-postgresadmin
+          image: thajeztah/pgadmin4
+          imagePullPolicy: Always
+          name: counter-postgresadmin
+          ports:
+          - containerPort: 5050
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /pgadmin-data
+            name: pgadmin-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: pgadmin-data
+  status:
+    conditions:
+    - lastTransitionTime: "2023-07-06T14:16:46Z"
+      lastUpdateTime: "2023-07-06T14:16:46Z"
+      message: Deployment does not have minimum availability.
+      reason: MinimumReplicasUnavailable
+      status: "False"
+      type: Available
+    - lastTransitionTime: "2023-07-06T14:26:47Z"
+      lastUpdateTime: "2023-07-06T14:26:47Z"
+      message: ReplicaSet "counter-postgresadmin-69794dcf8d" has timed out progressing.
+      reason: ProgressDeadlineExceeded
+      status: "False"
+      type: Progressing
+    observedGeneration: 1
+    replicas: 1
+    unavailableReplicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"nginx"},"name":"nginx-deployment","namespace":"zlic-kkoneswaran1"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"nginx"}},"template":{"metadata":{"labels":{"app":"nginx"}},"spec":{"containers":[{"image":"ghcr.io/kanishankoneswaran/html-page:v1","name":"nginx","ports":[{"containerPort":8080}]}]}}}}
+    creationTimestamp: "2023-06-30T14:32:20Z"
+    generation: 1
+    labels:
+      app: nginx
+    name: nginx-deployment
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1068397682"
+    uid: bf2dfaef-6857-4c52-9abb-46035b7c1051
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 3
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: nginx
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: nginx
+      spec:
+        containers:
+        - image: ghcr.io/kanishankoneswaran/html-page:v1
+          imagePullPolicy: IfNotPresent
+          name: nginx
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 3
+    conditions:
+    - lastTransitionTime: "2023-06-30T14:32:24Z"
+      lastUpdateTime: "2023-06-30T14:32:24Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2023-06-30T14:32:20Z"
+      lastUpdateTime: "2023-06-30T14:32:24Z"
+      message: ReplicaSet "nginx-deployment-86c6ffbfd7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 3
+    replicas: 3
+    updatedReplicas: 3
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2023-07-06T14:00:15Z"
+    generation: 1
+    labels:
+      app: counter-backend
+      pod-template-hash: 5847f8c4d4
+    name: counter-backend-5847f8c4d4
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: counter-backend
+      uid: d1143ce6-c5f0-45fc-8834-1928274ccc33
+    resourceVersion: "1082504255"
+    uid: 13a29727-d632-4699-96a0-e1aeafcec52f
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: counter-backend
+        pod-template-hash: 5847f8c4d4
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: counter-backend
+          pod-template-hash: 5847f8c4d4
+      spec:
+        containers:
+        - env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: counter-database
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: counter-database
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: counter-database
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                key: FRONTEND_URL
+                name: counter-backend
+          - name: npm_config_cache
+            value: ./.npm-cache
+          image: ghcr.io/kanishankoneswaran/counter-backend:v1
+          imagePullPolicy: IfNotPresent
+          name: counter-backend
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    fullyLabeledReplicas: 2
+    observedGeneration: 1
+    replicas: 2
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2023-07-06T11:38:17Z"
+    generation: 1
+    labels:
+      app: counter-database
+      pod-template-hash: 765d69545c
+    name: counter-database-765d69545c
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: counter-database
+      uid: 67680bee-d08a-4a56-9d55-a602c3f3de5c
+    resourceVersion: "1082229667"
+    uid: a1e07cc7-385d-482b-90fe-d8502a252066
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: counter-database
+        pod-template-hash: 765d69545c
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: counter-database
+          pod-template-hash: 765d69545c
+      spec:
+        containers:
+        - env:
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: counter-database
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: counter-database
+          - name: POSTGRESQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: counter-database
+          image: quay.io/centos7/postgresql-10-centos7:20221109
+          imagePullPolicy: Always
+          name: counter-database
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2023-07-06T13:42:49Z"
+    generation: 1
+    labels:
+      app: counter-frontend
+      pod-template-hash: 7cbdfdf9c
+    name: counter-frontend-7cbdfdf9c
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: counter-frontend
+      uid: 8d506ee4-c68b-411a-b003-627378abba98
+    resourceVersion: "1082436244"
+    uid: 6739ef2a-75ab-4de0-96a0-9d7752cd4657
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: counter-frontend
+        pod-template-hash: 7cbdfdf9c
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: counter-frontend
+          pod-template-hash: 7cbdfdf9c
+      spec:
+        containers:
+        - env:
+          - name: PUBLIC_URL
+            valueFrom:
+              configMapKeyRef:
+                key: BACKEND_URL
+                name: counter-frontend-config
+          - name: npm_config_cache
+            value: ./.npm-cache
+          image: ghcr.io/kanishankoneswaran/counter-frontend:v1
+          imagePullPolicy: IfNotPresent
+          name: counter-frontend
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    fullyLabeledReplicas: 2
+    observedGeneration: 1
+    readyReplicas: 2
+    replicas: 2
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2023-07-06T14:16:46Z"
+    generation: 1
+    labels:
+      app: counter-postgresadmin
+      pod-template-hash: 69794dcf8d
+    name: counter-postgresadmin-69794dcf8d
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: counter-postgresadmin
+      uid: 27725dc8-64df-4939-ad08-5e0887ad1399
+    resourceVersion: "1082492636"
+    uid: e0e3b59b-e12a-4c51-a8a4-4715729e1c2d
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: counter-postgresadmin
+        pod-template-hash: 69794dcf8d
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: counter-postgresadmin
+          pod-template-hash: 69794dcf8d
+      spec:
+        containers:
+        - command:
+          - ./wait-for-it.sh
+          - pg:5432
+          - --
+          - python
+          - /usr/local/bin/pgadmin4.py
+          env:
+          - name: PGADMIN_DEFAULT_EMAIL
+            value: admin@admin.com
+          - name: PGADMIN_DEFAULT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: pgadmin-default-password
+                name: counter-postgresadmin
+          image: thajeztah/pgadmin4
+          imagePullPolicy: Always
+          name: counter-postgresadmin
+          ports:
+          - containerPort: 5050
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /pgadmin-data
+            name: pgadmin-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: pgadmin-data
+  status:
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "3"
+      deployment.kubernetes.io/max-replicas: "4"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2023-06-30T14:32:20Z"
+    generation: 1
+    labels:
+      app: nginx
+      pod-template-hash: 86c6ffbfd7
+    name: nginx-deployment-86c6ffbfd7
+    namespace: zlic-kkoneswaran1
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: nginx-deployment
+      uid: bf2dfaef-6857-4c52-9abb-46035b7c1051
+    resourceVersion: "1068397681"
+    uid: a396ccdc-ce93-440a-97d6-da49c7fc6cf2
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
+        app: nginx
+        pod-template-hash: 86c6ffbfd7
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: nginx
+          pod-template-hash: 86c6ffbfd7
+      spec:
+        containers:
+        - image: ghcr.io/kanishankoneswaran/html-page:v1
+          imagePullPolicy: IfNotPresent
+          name: nginx
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 3
+    fullyLabeledReplicas: 3
+    observedGeneration: 1
+    readyReplicas: 3
+    replicas: 3
+- apiVersion: autoscaling/v2
+  kind: HorizontalPodAutoscaler
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"autoscaling/v2beta2","kind":"HorizontalPodAutoscaler","metadata":{"annotations":{},"name":"counter-backend","namespace":"zlic-kkoneswaran1"},"spec":{"maxReplicas":2,"metrics":[{"resource":{"name":"cpu","target":{"averageUtilization":50,"type":"Utilization"}},"type":"Resource"}],"minReplicas":2,"scaleTargetRef":{"apiVersion":"apps/v1","kind":"Deployment","name":"counter-backend"}}}
+    creationTimestamp: "2023-07-06T14:10:59Z"
+    name: counter-backend
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082483428"
+    uid: ad26836e-adca-4abd-b9b5-6d0556d2075d
+  spec:
+    maxReplicas: 2
+    metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 50
+          type: Utilization
+      type: Resource
+    minReplicas: 2
+    scaleTargetRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: counter-backend
+  status:
+    conditions:
+    - lastTransitionTime: "2023-07-06T14:11:14Z"
+      message: the HPA controller was able to get the target's current scale
+      reason: SucceededGetScale
+      status: "True"
+      type: AbleToScale
+    - lastTransitionTime: "2023-07-06T14:11:14Z"
+      message: 'the HPA was unable to compute the replica count: failed to get cpu
+        utilization: unable to get metrics for resource cpu: no metrics returned from
+        resource metrics API'
+      reason: FailedGetResourceMetric
+      status: "False"
+      type: ScalingActive
+    currentMetrics: null
+    currentReplicas: 2
+    desiredReplicas: 0
+- apiVersion: autoscaling/v2
+  kind: HorizontalPodAutoscaler
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"autoscaling/v2beta2","kind":"HorizontalPodAutoscaler","metadata":{"annotations":{},"name":"counter-frontend","namespace":"zlic-kkoneswaran1"},"spec":{"maxReplicas":4,"metrics":[{"resource":{"name":"cpu","target":{"averageUtilization":50,"type":"Utilization"}},"type":"Resource"}],"minReplicas":2,"scaleTargetRef":{"apiVersion":"apps/v1","kind":"Deployment","name":"counter-frontend"}}}
+    creationTimestamp: "2023-07-06T14:12:08Z"
+    name: counter-frontend
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082493821"
+    uid: a055d5bc-067e-4a84-a07d-a01909b91d99
+  spec:
+    maxReplicas: 4
+    metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 50
+          type: Utilization
+      type: Resource
+    minReplicas: 2
+    scaleTargetRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: counter-frontend
+  status:
+    conditions:
+    - lastTransitionTime: "2023-07-06T14:12:23Z"
+      message: recommended size matches current size
+      reason: ReadyForNewScale
+      status: "True"
+      type: AbleToScale
+    - lastTransitionTime: "2023-07-06T14:12:23Z"
+      message: the HPA was able to successfully calculate a replica count from cpu
+        resource utilization (percentage of request)
+      reason: ValidMetricFound
+      status: "True"
+      type: ScalingActive
+    - lastTransitionTime: "2023-07-06T14:17:23Z"
+      message: the desired replica count is less than the minimum replica count
+      reason: TooFewReplicas
+      status: "True"
+      type: ScalingLimited
+    currentMetrics:
+    - resource:
+        current:
+          averageUtilization: 0
+          averageValue: "0"
+        name: cpu
+      type: Resource
+    currentReplicas: 2
+    desiredReplicas: 2
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"route.openshift.io/v1","kind":"Route","metadata":{"annotations":{},"labels":{"app":"chill"},"name":"chill","namespace":"zlic-kkoneswaran1"},"spec":{"port":{"targetPort":"8080-tcp"},"tls":{"insecureEdgeTerminationPolicy":"Redirect","termination":"edge"},"to":{"kind":"Service","name":"service"}}}
+      openshift.io/host.generated: "true"
+    creationTimestamp: "2023-06-30T14:32:20Z"
+    labels:
+      app: chill
+    name: chill
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1068397543"
+    uid: dba0f171-2020-4d5a-b5e0-f1a824936a3e
+  spec:
+    host: chill-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud
+    port:
+      targetPort: 8080-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: service
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: "2023-06-30T14:32:20Z"
+        status: "True"
+        type: Admitted
+      host: chill-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud
+      routerCanonicalHostname: router-default.apps.exoscale-ch-gva-2-0.appuio.cloud
+      routerName: default
+      wildcardPolicy: None
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"route.openshift.io/v1","kind":"Route","metadata":{"annotations":{},"labels":{"app":"counter-backend"},"name":"counter-backend","namespace":"zlic-kkoneswaran1"},"spec":{"port":{"targetPort":"8080-tcp"},"to":{"kind":"Service","name":"counter-backend"}}}
+      openshift.io/host.generated: "true"
+    creationTimestamp: "2023-07-06T12:37:03Z"
+    labels:
+      app: counter-backend
+    name: counter-backend
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082326525"
+    uid: 20e763d7-079a-4d25-aaa5-7d4be750b4e0
+  spec:
+    host: counter-backend-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud
+    port:
+      targetPort: 8080-tcp
+    to:
+      kind: Service
+      name: counter-backend
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: "2023-07-06T12:37:03Z"
+        status: "True"
+        type: Admitted
+      host: counter-backend-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud
+      routerCanonicalHostname: router-default.apps.exoscale-ch-gva-2-0.appuio.cloud
+      routerName: default
+      wildcardPolicy: None
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"route.openshift.io/v1","kind":"Route","metadata":{"annotations":{},"name":"counter-frontend","namespace":"zlic-kkoneswaran1"},"spec":{"port":{"targetPort":80},"to":{"kind":"Service","name":"counter-frontend"},"wildcardPolicy":"None"}}
+      openshift.io/host.generated: "true"
+    creationTimestamp: "2023-07-06T12:00:32Z"
+    name: counter-frontend
+    namespace: zlic-kkoneswaran1
+    resourceVersion: "1082266291"
+    uid: 809758a1-e68e-4859-bd0b-cbe45d874467
+  spec:
+    host: counter-frontend-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud
+    port:
+      targetPort: 80
+    to:
+      kind: Service
+      name: counter-frontend
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: "2023-07-06T12:00:32Z"
+        status: "True"
+        type: Admitted
+      host: counter-frontend-zlic-kkoneswaran1.apps.exoscale-ch-gva-2-0.appuio.cloud
+      routerCanonicalHostname: router-default.apps.exoscale-ch-gva-2-0.appuio.cloud
+      routerName: default
+      wildcardPolicy: None
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
