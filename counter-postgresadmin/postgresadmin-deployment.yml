@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: counter-postgresadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: counter-postgresadmin
+  template:
+    metadata:
+      labels:
+        app: counter-postgresadmin
+    spec:
+      containers:
+        - name: counter-postgresadmin
+          image: thajeztah/pgadmin4
+          ports:
+            - containerPort: 5050
+          command: ["./wait-for-it.sh", "pg:5432", "--", "python", "/usr/local/bin/pgadmin4.py"]
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: "admin@admin.com"
+            - name: PGADMIN_DEFAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: counter-postgresadmin
+                  key: pgadmin-default-password
+          volumeMounts:
+            - name: pgadmin-data
+              mountPath: /pgadmin-data
+      volumes:
+        - name: pgadmin-data
+          emptyDir: {}
